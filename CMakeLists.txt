@@ -24,11 +24,13 @@ add_executable(${PROJECT_NAME})
 set(TARGET "STM32F756ZG")
 include(${CMAKE_SOURCE_DIR}/libs/stm32f7.cmake)
 include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
+include(${CMAKE_SOURCE_DIR}/libs/sx126x_driver.cmake)
 
 get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld
                        ABSOLUTE)
 
-target_include_directories(${PROJECT_NAME} PUBLIC src/nucleo-f756zg src)
+target_include_directories(${PROJECT_NAME} PUBLIC src/nucleo-f756zg src/radio
+                                                  src)
 
 target_sources(
   ${PROJECT_NAME}
@@ -41,6 +43,11 @@ target_sources(
          src/nucleo-f756zg/usbd_cdc_if.c
          src/nucleo-f756zg/usbd_conf.c
          src/nucleo-f756zg/usbd_desc.c
+         src/radio/apps_common.c
+         src/radio/smtc_hal_dbg_trace.c
+         src/radio/smtc_shield_sx1261mb2bas.c
+         src/radio/sx126x_hal.c
+         src/radio/sx126x_str.c
          src/main.c)
 
 target_compile_options(
