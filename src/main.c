@@ -17,9 +17,6 @@ int main(void) {
   MX_SPI1_Init();
   MX_USB_DEVICE_Init();
 
-  uint8_t datasent = 0;
-  int32_t ret;
-
   while (1) {
 
     HAL_Delay(50);
