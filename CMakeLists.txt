@@ -25,6 +25,8 @@ set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 set(TARGET "STM32F756ZG")
 include(${CMAKE_SOURCE_DIR}/libs/stm32f7.cmake)
 include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
+include(${CMAKE_SOURCE_DIR}/libs/cat.cmake)
+include(${CMAKE_SOURCE_DIR}/libs/bytebuffer.cmake)
 
 project(${APP} C CXX ASM)
 
@@ -46,6 +48,7 @@ target_sources(${APP} PUBLIC
     src/nucleo-f756zg/usbd_conf.c
     src/nucleo-f756zg/usbd_desc.c
 
+    src/at.c
     src/main.c
 )
 
