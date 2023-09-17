@@ -71,3 +71,15 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build
+
+# CMake toolchain
+toolchain*.cmake
+
+# NVIM Build/deps dir
+/build/
+/.deps/
+/tmp/
+/.clangd/
+/.cache/clangd/
+/.ccls-cache/
+/.clang-tidy
