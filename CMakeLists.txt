@@ -25,6 +25,7 @@ set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 set(TARGET "STM32F756ZG")
 include(${CMAKE_SOURCE_DIR}/libs/stm32f7.cmake)
 include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
+include(${CMAKE_SOURCE_DIR}/libs/something.cmake)
 
 project(${APP} C CXX ASM)
 
