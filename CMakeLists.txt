@@ -2,8 +2,21 @@ cmake_minimum_required(VERSION 3.16)
 
 set(APP "lora-usb")
 
-set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 add_executable(${APP})
+
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR ARM)
+
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+set(TOOLCHAIN_PREFIX arm-none-eabi-)
+
+set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
+set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
+set(CMAKE_ASM_COMPILER ${TOOLCHAIN_PREFIX}gcc)
+set(CMAKE_OBJCOPY ${TOOLCHAIN_PREFIX}objcopy)
+set(CMAKE_OBJDUMP ${TOOLCHAIN_PREFIX}objdump)
+set(CMAKE_SIZE ${TOOLCHAIN_PREFIX}size)
 
 set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
@@ -58,6 +71,12 @@ target_link_options(${APP} PUBLIC
     "-gdwarf-2"
 )
 
+if(CMAKE_C_COMPILER_VERSION VERSION_GREATER "13")
+target_link_options(${APP} PUBLIC
+    "LINKER:--no-warn-rwx-segments"
+)
+endif()
+
 set(SUFFIX "elf")
 
 set_target_properties(${APP} PROPERTIES SUFFIX ".${SUFFIX}")
@@ -69,3 +88,4 @@ add_custom_command(TARGET ${APP} POST_BUILD
 add_custom_command(TARGET ${APP} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary ${APP}.${SUFFIX} ${APP}.bin
 )
+
