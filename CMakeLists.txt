@@ -3,17 +3,18 @@ cmake_minimum_required(VERSION 3.16)
 set(APP "lora-usb")
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
-
 add_executable(${APP})
 
 set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 
-get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld ABSOLUTE)
-
 set(TARGET "STM32F756ZG")
 include(${CMAKE_SOURCE_DIR}/libs/stm32f7.cmake)
 include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
+
+project(${APP} C CXX ASM)
+
+get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld ABSOLUTE)
 
 target_include_directories(${APP} PUBLIC
     src/nucleo-f756zg
@@ -60,8 +61,6 @@ target_link_options(${APP} PUBLIC
 set(SUFFIX "elf")
 
 set_target_properties(${APP} PROPERTIES SUFFIX ".${SUFFIX}")
-
-project(${APP} C CXX ASM)
 
 add_custom_command(TARGET ${APP} POST_BUILD
     COMMAND ${CMAKE_SIZE} --format=berkeley ${APP}.${SUFFIX}
