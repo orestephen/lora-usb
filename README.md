@@ -3,14 +3,22 @@ lora-usb
 
 # build
 
-create build directory and cd into it.
+**create build directory**
 
-`mkdir build; cd build`
+`mkdir build`
 
-configure build environment.
+**configure build environment**
 
-`cmake ..`
+`cmake -B build/ -S .`
+
+use `--toolchain <toolchain file>` for custom toolchaining or environment
+
+**build binary**
+
+`cmake --build build`
+
+use `-j<number>` to use multiple cores
 
 # DFU
 
-`sudo dfu-util -a 0 -s 0x8000000:leave -D example.bin`
+`sudo dfu-util -a 0 -s 0x8000000:leave -D build/lora-usb.bin`
