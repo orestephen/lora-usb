@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(cmsis_device_f7)
 FetchContent_MakeAvailable(stm32f7xx_hal_driver)
 
 target_include_directories(
-  ${APP}
+  ${PROJECT_NAME}
   PUBLIC ${cmsis_core_SOURCE_DIR}/Include ${cmsis_device_f7_SOURCE_DIR}/Include
          ${stm32f7xx_hal_driver_SOURCE_DIR}/Inc)
 
@@ -56,7 +56,7 @@ endforeach()
 string(TOLOWER ${TARGET_STM32} TARGET_STM32_LOWER)
 
 target_sources(
-  ${APP}
+  ${PROJECT_NAME}
   PUBLIC
     ${cmsis_device_f7_SOURCE_DIR}/Source/Templates/gcc/startup_${TARGET_STM32_LOWER}.s
     ${cmsis_device_f7_SOURCE_DIR}/Source/Templates/system_stm32f7xx.c
@@ -152,10 +152,12 @@ target_sources(
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_usb.c
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_utils.c)
 
-target_compile_options(${APP} PUBLIC "-mcpu=cortex-m7" "-mthumb"
-                                     "-mfpu=fpv5-sp-d16" "-mfloat-abi=hard")
+target_compile_options(
+  ${PROJECT_NAME} PUBLIC "-mcpu=cortex-m7" "-mthumb" "-mfpu=fpv5-sp-d16"
+                         "-mfloat-abi=hard")
 
-target_link_options(${APP} PUBLIC "-mcpu=cortex-m7" "-mthumb"
+target_link_options(${PROJECT_NAME} PUBLIC "-mcpu=cortex-m7" "-mthumb"
                     "-mfpu=fpv5-sp-d16" "-mfloat-abi=hard")
 
-target_compile_definitions(${APP} PUBLIC USE_HAL_DRIVER ${TARGET_STM32})
+target_compile_definitions(${PROJECT_NAME} PUBLIC USE_HAL_DRIVER
+                                                  ${TARGET_STM32})

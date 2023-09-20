@@ -12,7 +12,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(stm32_usb_device)
 
 target_include_directories(
-  ${APP}
+  ${PROJECT_NAME}
   PUBLIC ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Inc
          ${stm32_usb_device_SOURCE_DIR}/Class/BillBoard/Inc
          ${stm32_usb_device_SOURCE_DIR}/Class/CCID/Inc
@@ -31,7 +31,7 @@ target_include_directories(
          ${stm32_usb_device_SOURCE_DIR}/Core/Inc)
 
 target_sources(
-  ${APP}
+  ${PROJECT_NAME}
   PUBLIC
     ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Src/usbd_audio.c
     # ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Src/usbd_audio_if_template.c
