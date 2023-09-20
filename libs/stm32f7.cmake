@@ -1,38 +1,34 @@
 cmake_minimum_required(VERSION 3.16)
 
 include(FetchContent)
-Set(FETCHCONTENT_QUIET FALSE)
+set(FETCHCONTENT_QUIET FALSE)
 
 FetchContent_Declare(
-    cmsis_core
-    GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_core.git
-    GIT_TAG 96d6da4e252b06dcfdc041e7df23e86161c33007
-    GIT_PROGRESS TRUE
-)
+  cmsis_core
+  GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_core.git
+  GIT_TAG 96d6da4e252b06dcfdc041e7df23e86161c33007
+  GIT_PROGRESS TRUE)
 
 FetchContent_Declare(
-    cmsis_device_f7
-    GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_device_f7.git
-    GIT_TAG 25b0463439303b7a38f0d27b161f7d2f3c096e79
-    GIT_PROGRESS TRUE
-)
+  cmsis_device_f7
+  GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_device_f7.git
+  GIT_TAG 25b0463439303b7a38f0d27b161f7d2f3c096e79
+  GIT_PROGRESS TRUE)
 
 FetchContent_Declare(
-    stm32f7xx_hal_driver
-    GIT_REPOSITORY https://github.com/STMicroelectronics/stm32f7xx_hal_driver.git
-    GIT_TAG e61e3036e0ae928a58d64b07ea3550b209b473bc
-    GIT_PROGRESS TRUE
-)
+  stm32f7xx_hal_driver
+  GIT_REPOSITORY https://github.com/STMicroelectronics/stm32f7xx_hal_driver.git
+  GIT_TAG e61e3036e0ae928a58d64b07ea3550b209b473bc
+  GIT_PROGRESS TRUE)
 
 FetchContent_MakeAvailable(cmsis_core)
 FetchContent_MakeAvailable(cmsis_device_f7)
 FetchContent_MakeAvailable(stm32f7xx_hal_driver)
 
-target_include_directories(${APP} PUBLIC
-    ${cmsis_core_SOURCE_DIR}/Include
-    ${cmsis_device_f7_SOURCE_DIR}/Include
-    ${stm32f7xx_hal_driver_SOURCE_DIR}/Inc
-)
+target_include_directories(
+  ${APP}
+  PUBLIC ${cmsis_core_SOURCE_DIR}/Include ${cmsis_device_f7_SOURCE_DIR}/Include
+         ${stm32f7xx_hal_driver_SOURCE_DIR}/Inc)
 
 set(STM32F7_LIST
     STM32F756
@@ -48,19 +44,20 @@ set(STM32F7_LIST
     STM32F732
     STM32F733
     STM32F730
-    STM32F750
-)
+    STM32F750)
 
-foreach (ITEM IN LISTS STM32F7_LIST)
-    if (${TARGET} MATCHES "${ITEM}")
-        set(TARGET_STM32 "${ITEM}xx")
-        message("TARGET_STM32: ${TARGET_STM32}")
-    endif()
+foreach(ITEM IN LISTS STM32F7_LIST)
+  if(${TARGET} MATCHES "${ITEM}")
+    set(TARGET_STM32 "${ITEM}xx")
+    message("TARGET_STM32: ${TARGET_STM32}")
+  endif()
 endforeach()
 
 string(TOLOWER ${TARGET_STM32} TARGET_STM32_LOWER)
 
-target_sources(${APP} PUBLIC
+target_sources(
+  ${APP}
+  PUBLIC
     ${cmsis_device_f7_SOURCE_DIR}/Source/Templates/gcc/startup_${TARGET_STM32_LOWER}.s
     ${cmsis_device_f7_SOURCE_DIR}/Source/Templates/system_stm32f7xx.c
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_hal_adc.c
@@ -153,24 +150,12 @@ target_sources(${APP} PUBLIC
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_tim.c
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_usart.c
     ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_usb.c
-    ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_utils.c
-)
+    ${stm32f7xx_hal_driver_SOURCE_DIR}/Src/stm32f7xx_ll_utils.c)
 
-target_compile_options(${APP} PUBLIC
-    "-mcpu=cortex-m7"
-    "-mthumb"
-    "-mfpu=fpv5-sp-d16"
-    "-mfloat-abi=hard"
-)
+target_compile_options(${APP} PUBLIC "-mcpu=cortex-m7" "-mthumb"
+                                     "-mfpu=fpv5-sp-d16" "-mfloat-abi=hard")
 
-target_link_options(${APP} PUBLIC
-    "-mcpu=cortex-m7"
-    "-mthumb"
-    "-mfpu=fpv5-sp-d16"
-    "-mfloat-abi=hard"
-)
+target_link_options(${APP} PUBLIC "-mcpu=cortex-m7" "-mthumb"
+                    "-mfpu=fpv5-sp-d16" "-mfloat-abi=hard")
 
-target_compile_definitions(${APP} PUBLIC
-    USE_HAL_DRIVER
-    ${TARGET_STM32}
-)
+target_compile_definitions(${APP} PUBLIC USE_HAL_DRIVER ${TARGET_STM32})

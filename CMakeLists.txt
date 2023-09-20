@@ -27,65 +27,62 @@ include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
 
 project(${APP} C CXX ASM)
 
-get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld ABSOLUTE)
+get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld
+                       ABSOLUTE)
 
-target_include_directories(${APP} PUBLIC
-    src/nucleo-f756zg
-    src
-)
+target_include_directories(${APP} PUBLIC src/nucleo-f756zg src)
 
-target_sources(${APP} PUBLIC
-    src/nucleo-f756zg/gpio.c
-    src/nucleo-f756zg/nucleo-f756zg.c
-    src/nucleo-f756zg/spi.c
-    src/nucleo-f756zg/stm32f7xx_hal_msp.c
-    src/nucleo-f756zg/stm32f7xx_it.c
-    src/nucleo-f756zg/usb_device.c
-    src/nucleo-f756zg/usbd_cdc_if.c
-    src/nucleo-f756zg/usbd_conf.c
-    src/nucleo-f756zg/usbd_desc.c
+target_sources(
+  ${APP}
+  PUBLIC src/nucleo-f756zg/gpio.c
+         src/nucleo-f756zg/nucleo-f756zg.c
+         src/nucleo-f756zg/spi.c
+         src/nucleo-f756zg/stm32f7xx_hal_msp.c
+         src/nucleo-f756zg/stm32f7xx_it.c
+         src/nucleo-f756zg/usb_device.c
+         src/nucleo-f756zg/usbd_cdc_if.c
+         src/nucleo-f756zg/usbd_conf.c
+         src/nucleo-f756zg/usbd_desc.c
+         src/main.c)
 
-    src/main.c
-)
+target_compile_options(
+  ${APP}
+  PUBLIC "-fstack-usage"
+         "-fdata-sections"
+         "-ffunction-sections"
+         "--save-temps"
+         "-O0"
+         "-g3"
+         "-gdwarf-2")
 
-target_compile_options(${APP} PUBLIC
-    "-fstack-usage"
-    "-fdata-sections"
-    "-ffunction-sections"
-    "--save-temps"
-    "-O0"
-    "-g3"
-    "-gdwarf-2"
-)
-
-target_link_options(${APP} PUBLIC
-    -Wall
-    --specs=nosys.specs
-    -Wl,--cref,--no-warn-mismatch,--gc-sections,-Map=${APP}.map
-    -T${LINKER_SCRIPT}
-    "-fstack-usage"
-    "-fdata-sections"
-    "-ffunction-sections"
-    "-Og"
-    "-g3"
-    "-gdwarf-2"
-)
+target_link_options(
+  ${APP}
+  PUBLIC
+  -Wall
+  --specs=nosys.specs
+  -Wl,--cref,--no-warn-mismatch,--gc-sections,-Map=${APP}.map
+  -T${LINKER_SCRIPT}
+  "-fstack-usage"
+  "-fdata-sections"
+  "-ffunction-sections"
+  "-Og"
+  "-g3"
+  "-gdwarf-2")
 
 if(CMAKE_C_COMPILER_VERSION VERSION_GREATER "13")
-target_link_options(${APP} PUBLIC
-    "LINKER:--no-warn-rwx-segments"
-)
+  target_link_options(${APP} PUBLIC "LINKER:--no-warn-rwx-segments")
 endif()
 
 set(SUFFIX "elf")
 
 set_target_properties(${APP} PROPERTIES SUFFIX ".${SUFFIX}")
 
-add_custom_command(TARGET ${APP} POST_BUILD
-    COMMAND ${CMAKE_SIZE} --format=berkeley ${APP}.${SUFFIX}
-)
+add_custom_command(
+  TARGET ${APP}
+  POST_BUILD
+  COMMAND ${CMAKE_SIZE} --format=berkeley ${APP}.${SUFFIX})
 
-add_custom_command(TARGET ${APP} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary ${APP}.${SUFFIX} ${APP}.bin
-)
-
+add_custom_command(
+  TARGET ${APP}
+  POST_BUILD
+  COMMAND ${CMAKE_OBJCOPY} -O binary ${APP}.${SUFFIX} ${APP}.bin)

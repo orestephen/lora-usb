@@ -1,37 +1,38 @@
 cmake_minimum_required(VERSION 3.16)
 
 include(FetchContent)
-Set(FETCHCONTENT_QUIET FALSE)
+set(FETCHCONTENT_QUIET FALSE)
 
 FetchContent_Declare(
-    stm32_usb_device
-    GIT_REPOSITORY https://github.com/STMicroelectronics/stm32_mw_usb_device.git
-    GIT_TAG 2022e75b01a499b17acd17d28691b1ed5bbef2dc
-    GIT_PROGRESS TRUE
-)
+  stm32_usb_device
+  GIT_REPOSITORY https://github.com/STMicroelectronics/stm32_mw_usb_device.git
+  GIT_TAG 2022e75b01a499b17acd17d28691b1ed5bbef2dc
+  GIT_PROGRESS TRUE)
 
 FetchContent_MakeAvailable(stm32_usb_device)
 
-target_include_directories(${APP} PUBLIC
-    ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/BillBoard/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CCID/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CDC/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CDC_ECM/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CDC_RNDIS/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CompositeBuilder/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/CustomHID/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/DFU/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/HID/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/MSC/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/MTP/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/Printer/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/Template/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Class/VIDEO/Inc
-    ${stm32_usb_device_SOURCE_DIR}/Core/Inc
-)
+target_include_directories(
+  ${APP}
+  PUBLIC ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/BillBoard/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CCID/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CDC/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CDC_ECM/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CDC_RNDIS/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CompositeBuilder/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/CustomHID/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/DFU/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/HID/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/MSC/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/MTP/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/Printer/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/Template/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Class/VIDEO/Inc
+         ${stm32_usb_device_SOURCE_DIR}/Core/Inc)
 
-target_sources(${APP} PUBLIC
+target_sources(
+  ${APP}
+  PUBLIC
     ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Src/usbd_audio.c
     # ${stm32_usb_device_SOURCE_DIR}/Class/AUDIO/Src/usbd_audio_if_template.c
     ${stm32_usb_device_SOURCE_DIR}/Class/BillBoard/Src/usbd_billboard.c
@@ -70,6 +71,4 @@ target_sources(${APP} PUBLIC
     ${stm32_usb_device_SOURCE_DIR}/Core/Src/usbd_core.c
     ${stm32_usb_device_SOURCE_DIR}/Core/Src/usbd_ctlreq.c
     # ${stm32_usb_device_SOURCE_DIR}/Core/Src/usbd_desc_template.c
-    ${stm32_usb_device_SOURCE_DIR}/Core/Src/usbd_ioreq.c
-)
-
+    ${stm32_usb_device_SOURCE_DIR}/Core/Src/usbd_ioreq.c)
