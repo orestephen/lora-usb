@@ -7,6 +7,7 @@ FetchContent_Declare(
   stm32_usb_device
   GIT_REPOSITORY https://github.com/STMicroelectronics/stm32_mw_usb_device.git
   GIT_TAG 2022e75b01a499b17acd17d28691b1ed5bbef2dc
+  GIT_SHALLOW 1
   GIT_PROGRESS TRUE)
 
 FetchContent_MakeAvailable(stm32_usb_device)

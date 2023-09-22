@@ -7,18 +7,21 @@ FetchContent_Declare(
   cmsis_core
   GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_core.git
   GIT_TAG 96d6da4e252b06dcfdc041e7df23e86161c33007
+  GIT_SHALLOW 1
   GIT_PROGRESS TRUE)
 
 FetchContent_Declare(
   cmsis_device_f7
   GIT_REPOSITORY https://github.com/STMicroelectronics/cmsis_device_f7.git
   GIT_TAG 25b0463439303b7a38f0d27b161f7d2f3c096e79
+  GIT_SHALLOW 1
   GIT_PROGRESS TRUE)
 
 FetchContent_Declare(
   stm32f7xx_hal_driver
   GIT_REPOSITORY https://github.com/STMicroelectronics/stm32f7xx_hal_driver.git
   GIT_TAG e61e3036e0ae928a58d64b07ea3550b209b473bc
+  GIT_SHALLOW 1
   GIT_PROGRESS TRUE)
 
 FetchContent_MakeAvailable(cmsis_core)
