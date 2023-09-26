@@ -27,6 +27,39 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(LORA_nRESET_GPIO_Port, LORA_nRESET_Pin, GPIO_PIN_SET);
+  GPIO_InitStruct.Pin = LORA_nRESET_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(LORA_nRESET_GPIO_Port, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(LORA_nCS_GPIO_Port, LORA_nCS_Pin, GPIO_PIN_SET);
+  GPIO_InitStruct.Pin = LORA_nCS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(LORA_nCS_GPIO_Port, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(LORA_ANT_SW_GPIO_Port, LORA_ANT_SW_Pin, GPIO_PIN_RESET);
+  GPIO_InitStruct.Pin = LORA_ANT_SW_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(LORA_ANT_SW_GPIO_Port, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = LORA_BUSY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(LORA_BUSY_GPIO_Port, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = LORA_DIO1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(LORA_DIO1_GPIO_Port, &GPIO_InitStruct);
   
   HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
   GPIO_InitStruct.Pin = USB_PowerSwitchOn_Pin;
