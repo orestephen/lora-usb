@@ -1,5 +1,9 @@
 #include "usbd_cdc_if.h"
+#include "nucleo-f756zg.h"
+#include "stm32f7xx_hal_gpio.h"
 
+#include "boardStdio.h"
+#include "ring_buffer.h"
 
 /** @defgroup USBD_CDC_IF_Private_Variables USBD_CDC_IF_Private_Variables
  * @brief Private variables.
@@ -14,9 +18,6 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
-
-uint32_t rx_buffer_length;
-uint8_t rx_buffer[1024];
 
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
@@ -37,6 +38,9 @@ static int8_t CDC_Init_FS(void) {
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+
+  boardStdioInit();
+
   return (USBD_OK);
   /* USER CODE END 3 */
 }
@@ -142,11 +146,15 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length) {
  */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len) {
   /* USER CODE BEGIN 6 */
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  rx_buffer_length = *Len;
-  memcpy(rx_buffer, Buf, rx_buffer_length);
+  ring_buffer_push(&boardStdioInputFifoHandle, Buf, *Len);
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   return (USBD_OK);
   /* USER CODE END 6 */
@@ -166,6 +174,9 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len) {
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len) {
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */
+
+  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+
   USBD_CDC_HandleTypeDef *hcdc =
       (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
   if (hcdc->TxState != 0) {
@@ -173,6 +184,8 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len) {
   }
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
   result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+
+  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
   /* USER CODE END 7 */
   return result;
 }

@@ -28,7 +28,8 @@ include(${CMAKE_SOURCE_DIR}/libs/stm32_usb.cmake)
 get_filename_component(LINKER_SCRIPT src/nucleo-f756zg/STM32F756ZGTx_FLASH.ld
                        ABSOLUTE)
 
-target_include_directories(${PROJECT_NAME} PUBLIC src/nucleo-f756zg src)
+target_include_directories(${PROJECT_NAME} PUBLIC src/nucleo-f756zg
+                                                  src/byte_buffer src/shell src)
 
 target_sources(
   ${PROJECT_NAME}
@@ -41,6 +42,10 @@ target_sources(
          src/nucleo-f756zg/usbd_cdc_if.c
          src/nucleo-f756zg/usbd_conf.c
          src/nucleo-f756zg/usbd_desc.c
+         src/byte_buffer/ring_buffer.c
+         src/shell/shell.c
+         src/byte_buffer/boardStdio.c
+         src/shell/boardShell.c
          src/main.c)
 
 target_compile_options(
