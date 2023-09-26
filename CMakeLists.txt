@@ -46,6 +46,7 @@ target_sources(
          src/shell/shell.c
          src/byte_buffer/boardStdio.c
          src/shell/boardShell.c
+         src/bootloader.c
          src/main.c)
 
 target_compile_options(

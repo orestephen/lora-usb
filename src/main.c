@@ -9,6 +9,7 @@
 
 #include "boardShell.h"
 #include "boardStdio.h"
+#include "bootloader.h"
 
 extern uint8_t rx_buffer[];
 extern uint32_t rx_buffer_length;
@@ -18,6 +19,8 @@ int main(void) {
   HAL_Init();
 
   SystemClock_Config();
+
+  bootloadCheck();
 
   MX_GPIO_Init();
   MX_SPI1_Init();

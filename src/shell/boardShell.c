@@ -6,6 +6,7 @@
 #include "nucleo-f756zg.h"
 
 #include "boardStdio.h"
+#include "bootloader.h"
 #include "shell.h"
 
 static const char *TAG = "ShellThread";
@@ -38,6 +39,11 @@ void testCommand(shellContext_t *pContext, int16_t argc, char **argv) {
   boardStdioPrintf("test:ok\r\n");
 }
 
+void bootloadCommand(shellContext_t *pContext, int16_t argc, char **argv) {
+  bootloadSet();
+  bootloadReset();
+}
+
 int8_t boardShellInit(void) {
   int8_t retCode = 0;
 
@@ -50,6 +56,7 @@ int8_t boardShellInit(void) {
   shellInit(&shell, iface, shellBuffer, shellBufferLength, 10);
 
   boardShellAddProgram("test", testCommand);
+  boardShellAddProgram("bootload", bootloadCommand);
 
   return retCode;
 }
